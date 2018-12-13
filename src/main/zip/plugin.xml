@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1">
+    <header>
+        <identifier version="1" id="com.urbancode.air.plugin.Plugin-Template"
+                    name="Plugin Template"/>
+        <description>
+			        This is an example plugin to provide a template for creating your own plugins.
+        </description>
+        <tag>Automation/Template</tag>
+    </header>
+    <!-- ==================================== -->
+    <!--   PLUGIN STEPS                          -->
+    <!-- ==================================== -->
+    <step-type name="Example Step">
+        <description>An example step</description>
+        <properties>
+            <property name="textBox" required="true">
+                <property-ui type="textBox" label="Text Box"
+                             description="Enter some text into the text box. This is a required field"/>
+            </property>
+            <property name="secureBox">
+                <property-ui type="secureBox" label="Secure Box"
+                             description="Enter some text into the secure box."/>
+            </property>
+            <property name="textAreaBox">
+                <property-ui type="textAreaBox" label="Text Area Box"
+                             description="Enter some values into the text area box."
+                             default-value="name=value"/>
+            </property>
+            <property name="checkBox">
+                <property-ui type="checkBox" label="CheckBox"
+                             description="Tick the check box"/>
+            </property>
+            <property name="selectBox">
+                <property-ui type="selectBox" label="Select Box"
+                             description="Select one of the values from the select box."
+                             default-value="First"/>
+                <value label="First">First</value>
+                <value label="Second">Second</value>
+            </property>
+            <property name="hiddenTextBox">
+                <property-ui hidden="true" type="textBox" label="Hidden Text Box" default-value="1"
+                             description="Enter some test or"/>
+            </property>
+        </properties>
+        <post-processing><![CDATA[
+        properties.put("Status", "Success");
+        if (properties.get("exitCode") != 0) {
+            properties.put("Status", "Failure");
+        }
+        else {
+            scanner.register("(?i)Error",  function(lineNumber, line) {
+                commandOut.println("Received Error");
+                commandOut.println(lineNumber.toString() + " : " + line);
+                var errors = properties.get("Error");
+                if (errors == null) {
+                    errors = new java.util.ArrayList();
+                }
+                errors.add(line);
+                properties.put("Error", errors);
+
+                properties.put("Status", "Failure");
+            });
+            scanner.scan();
+
+            var errors = properties.get("Error");
+            if (errors == null) {
+                errors = new java.util.ArrayList();
+            }
+            properties.put("Error", errors.toString());
+        }
+     ]]></post-processing>
+        <command program="${GROOVY_HOME}/bin/groovy">
+            <arg value="-cp"/>
+            <arg path="classes:lib/*"/>
+            <arg value="-Djnp.disableDiscovery=true"/>
+            <arg file="example_step.groovy"/>
+            <arg file="${PLUGIN_INPUT_PROPS}"/>
+            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>
+</plugin>

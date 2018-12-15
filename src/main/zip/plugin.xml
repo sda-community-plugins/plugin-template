@@ -9,7 +9,7 @@
         <tag>Automation/Template</tag>
     </header>
     <!-- ==================================== -->
-    <!--   PLUGIN STEPS                          -->
+    <!--   PLUGIN STEPS                       -->
     <!-- ==================================== -->
     <step-type name="Example Step">
         <description>An example step</description>
@@ -43,6 +43,8 @@
                              description="Enter some test or"/>
             </property>
         </properties>
+        <!-- This is an example of how to determine success or failure of a step -->
+        <!-- Normally we just check for exit value, but here we check for a particular string in the output -->
         <post-processing><![CDATA[
         properties.put("Status", "Success");
         if (properties.get("exitCode") != 0) {

@@ -19,8 +19,10 @@
 
     <properties>
         <air.plugin.build.parent.absolute.path>${basedir}/../air-plugin-build-parent</air.plugin.build.parent.absolute.path>
+        <!-- this is the minimum version of DA your plugin is "supported" on -->
         <mininum.server.version.needed>6.2</mininum.server.version.needed>
-        <plugin.major.version>1</plugin.major.version>
+        <!-- change this when you create a new version of your plugin -->
+        <plugin.major.version>2</plugin.major.version>
         <plugin.build.version>SNAPSHOT</plugin.build.version>
     </properties>
 

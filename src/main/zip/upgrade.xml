@@ -3,4 +3,21 @@
         xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
 >
 
+    <!-- Include a new "migrate" element for each plugin version -->
+    <migrate to-version="2">
+        <!-- you can change the name of a plugin step by including the "old" attribute -->
+        <migrate-command name="Example Step 1">
+            <migrate-properties>
+                <!-- you can change the name of a property by including the "old" attribute -->
+                <migrate-property old="debug" name="debugMode"/>
+            </migrate-properties>
+        </migrate-command>
+        <migrate-command name="Example Step 2">
+            <migrate-properties>
+                <!-- you can change the default value of a property by including the "default" attribute -->
+                <migrate-property old="debug" name="debugMode" default="true"/>
+            </migrate-properties>
+        </migrate-command>
+        <migrate-command name="Example Step 3"/>
+    </migrate>
 </plugin-upgrade>

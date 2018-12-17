@@ -51,12 +51,14 @@ String textBox  = props.notNull('textBox')
 String secureBox = props.optional('secureBox')
 String textAreaBox = props.optional('textAreaBox')
 boolean checkBox = props.optionalBoolean('checkBox', true)
+boolean anotherCheckBox = props.optionalBoolean('anotherCheckBox', true)
+
 String selectBox = props.optional('selectBox')
-String textBox2 = props.optional('textBox2', '1')
+String hiddenTextBox = props.optional('hiddenTextBox', '1')
 //
 // It is good practice to include a "debug" mode option so a user can trace any step failures
 //
-boolean debugMode = props.optionalBoolean("debug", false)
+boolean debugMode = props.optionalBoolean("debugMode", false)
 
 println "----------------------------------------"
 println "-- STEP INPUTS"
@@ -73,8 +75,9 @@ println "Secure Box value: ${secureBox}"
 String encryptedSecureBox = PluginUtils.Encrypt(secureBox, PluginUtils.getSecretKey())
 println "Encrypted value: ${encryptedSecureBox}"
 println "Check Box value: ${checkBox}"
+println "Another Check Box value: ${anotherCheckBox}"
 println "Select Box value: ${selectBox?:''}"
-println "Hidden Text Area Box value: ${textBox2?:'1'}"
+println "Hidden Text Area Box value: ${hiddenTextBox?:'1'}"
 println "Text Area Box value:\n${textAreaBox?:''}"
 println "Debug mode value: ${debugMode}"
 if (debugMode) { props.setDebugLoggingMode() }

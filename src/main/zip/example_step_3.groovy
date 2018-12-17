@@ -64,7 +64,6 @@ println "----------------------------------------"
 //
 try {
     // Just print out the content of the Text Area box.
-    // If the content includes the word "Error" then the step should fail.
     println textAreaBox
 } catch (StepFailedException e) {
     //

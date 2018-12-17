@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is just for reference to show what the version "1" plugin.xml looked like -->
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1">
     <header>
-        <identifier version="2" id="com.serena.air.plugin.example.Plugin-Template"
+        <identifier version="1" id="com.serena.air.plugin.example.Plugin-Template"
                     name="Plugin Template"/>
         <description>
             This is an example plugin to provide a template for creating your own plugins.
@@ -18,7 +19,7 @@
                 <property-ui type="textBox" label="Text Box"
                              description="Enter some text into the text box. This is a required field"/>
             </property>
-            <property name="secureBox" required="true">
+            <property name="secureBox">
                 <property-ui type="secureBox" label="Secure Box"
                              description="Enter some text into the secure box."/>
             </property>
@@ -31,10 +32,6 @@
                 <property-ui type="checkBox" label="CheckBox"
                              description="Tick the check box"/>
             </property>
-            <property name="anotherCheckBox">
-                <property-ui type="checkBox" label="Another CheckBox" default-value="true"
-                             description="Tick the check box"/>
-            </property>
             <property name="selectBox">
                 <property-ui type="selectBox" label="Select Box"
                              description="Select one of the values from the select box."
@@ -42,11 +39,11 @@
                 <value label="First">First</value>
                 <value label="Second">Second</value>
             </property>
-            <property name="hiddenTextBox">
+            <property name="textBox2">
                 <property-ui hidden="true" type="textBox" label="Hidden Text Box" default-value="1"
                              description="Enter some test or"/>
             </property>
-            <property name="debugMode" required="false">
+            <property name="debug" required="false">
                 <property-ui type="checkBox" label="Debug Output" hidden="true"
                              description="Select this option to display debug output during execution."/>
             </property>
@@ -81,7 +78,7 @@
                              default-value="This is some example text.\
                                 If you include the word Error then the step will fail"/>
             </property>
-            <property name="debugMode" required="false">
+            <property name="debug" required="false">
                 <property-ui type="checkBox" label="Debug Output" hidden="true"
                              description="Select this option to display debug output during execution."/>
             </property>
@@ -122,39 +119,6 @@
             <arg path="classes:lib/*"/>
             <arg value="-Djnp.disableDiscovery=true"/>
             <arg file="example_step_2.groovy"/>
-            <arg file="${PLUGIN_INPUT_PROPS}"/>
-            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
-        </command>
-    </step-type>
-    <step-type name="Example Step 3">
-        <description>An example step to illustrate plugin version upgrade</description>
-        <properties>
-            <property name="textAreaBox" required="true">
-                <property-ui type="textAreaBox" label="Text Area Box"
-                             description="Enter some values into the text area box."
-                             default-value="This is some example text."/>
-            </property>
-            <property name="debugMode" required="false">
-                <property-ui type="checkBox" label="Debug Output" hidden="true" default-value="true"
-                             description="Select this option to display debug output during execution."/>
-            </property>
-        </properties>
-        <!-- This is an example of how to add another step into a new plugin version -->
-        <post-processing>
-            <![CDATA[
-                if (properties.get("exitCode") != 0) {
-                    properties.put("Status", "Failure");
-                }
-                else {
-                    properties.put("Status", "Success");
-                }
-            ]]>
-        </post-processing>
-        <command program="${GROOVY_HOME}/bin/groovy">
-            <arg value="-cp"/>
-            <arg path="classes:lib/*"/>
-            <arg value="-Djnp.disableDiscovery=true"/>
-            <arg file="example_step_3.groovy"/>
             <arg file="${PLUGIN_INPUT_PROPS}"/>
             <arg file="${PLUGIN_OUTPUT_PROPS}"/>
         </command>

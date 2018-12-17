@@ -1,4 +1,9 @@
-package com.serena.plugin
+/* --------------------------------------------------------------------------------
+ * This is an example "static helper" we can call in our plugin steps.
+ * --------------------------------------------------------------------------------
+ */
+
+package com.serena.air.plugin.example
 
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec

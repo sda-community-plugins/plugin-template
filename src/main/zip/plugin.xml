@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1">
     <header>
-        <identifier version="1" id="com.urbancode.air.plugin.Plugin-Template"
+        <identifier version="1" id="com.serena.air.plugin.example.Plugin-Template"
                     name="Plugin Template"/>
         <description>
-			        This is an example plugin to provide a template for creating your own plugins.
+            This is an example plugin to provide a template for creating your own plugins.
         </description>
         <tag>Automation/Template</tag>
     </header>
     <!-- ==================================== -->
     <!--   PLUGIN STEPS                       -->
     <!-- ==================================== -->
-    <step-type name="Example Step">
-        <description>An example step</description>
+    <step-type name="Example Step 1">
+        <description>An example step to demonstrate property inputs, outputs and execution</description>
         <properties>
             <property name="textBox" required="true">
                 <property-ui type="textBox" label="Text Box"
@@ -25,7 +25,7 @@
             <property name="textAreaBox">
                 <property-ui type="textAreaBox" label="Text Area Box"
                              description="Enter some values into the text area box."
-                             default-value="name=value"/>
+                             default-value="apple=green"/>
             </property>
             <property name="checkBox">
                 <property-ui type="checkBox" label="CheckBox"
@@ -38,45 +38,86 @@
                 <value label="First">First</value>
                 <value label="Second">Second</value>
             </property>
-            <property name="hiddenTextBox">
+            <property name="textBox2">
                 <property-ui hidden="true" type="textBox" label="Hidden Text Box" default-value="1"
                              description="Enter some test or"/>
+            </property>
+            <property name="debug" required="false">
+                <property-ui type="checkBox" label="Debug Output" hidden="true"
+                             description="Select this option to display debug output during execution."/>
             </property>
         </properties>
         <!-- This is an example of how to determine success or failure of a step -->
         <!-- Normally we just check for exit value, but here we check for a particular string in the output -->
-        <post-processing><![CDATA[
-        properties.put("Status", "Success");
-        if (properties.get("exitCode") != 0) {
-            properties.put("Status", "Failure");
-        }
-        else {
-            scanner.register("(?i)Error",  function(lineNumber, line) {
-                commandOut.println("Received Error");
-                commandOut.println(lineNumber.toString() + " : " + line);
-                var errors = properties.get("Error");
-                if (errors == null) {
-                    errors = new java.util.ArrayList();
+        <post-processing>
+            <![CDATA[
+                if (properties.get("exitCode") != 0) {
+                    properties.put("Status", "Failure");
                 }
-                errors.add(line);
-                properties.put("Error", errors);
-
-                properties.put("Status", "Failure");
-            });
-            scanner.scan();
-
-            var errors = properties.get("Error");
-            if (errors == null) {
-                errors = new java.util.ArrayList();
-            }
-            properties.put("Error", errors.toString());
-        }
-     ]]></post-processing>
+                else {
+                    properties.put("Status", "Success");
+                }
+            ]]>
+        </post-processing>
         <command program="${GROOVY_HOME}/bin/groovy">
             <arg value="-cp"/>
             <arg path="classes:lib/*"/>
             <arg value="-Djnp.disableDiscovery=true"/>
-            <arg file="example_step.groovy"/>
+            <arg file="example_step_1.groovy"/>
+            <arg file="${PLUGIN_INPUT_PROPS}"/>
+            <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+        </command>
+    </step-type>
+    <step-type name="Example Step 2">
+        <description>An example step to illustrate error scanning through post processing</description>
+        <properties>
+            <property name="textAreaBox" required="true">
+                <property-ui type="textAreaBox" label="Text Area Box"
+                             description="Enter some values into the text area box."
+                             default-value="This is some example text.\
+                                If you include the word Error then the step will fail"/>
+            </property>
+            <property name="debug" required="false">
+                <property-ui type="checkBox" label="Debug Output" hidden="true"
+                             description="Select this option to display debug output during execution."/>
+            </property>
+        </properties>
+        <!-- This is an example of how to determine success or failure of a step -->
+        <!-- Normally we just check for exit value, but here we check for a particular string in the output -->
+        <post-processing>
+            <![CDATA[
+                properties.put("Status", "Success");
+                if (properties.get("exitCode") != 0) {
+                    properties.put("Status", "Failure");
+                }
+                else {
+                    scanner.register("(?i)Error",  function(lineNumber, line) {
+                        commandOut.println("Received Error");
+                        commandOut.println(lineNumber.toString() + " : " + line);
+                        var errors = properties.get("Error");
+                        if (errors == null) {
+                            errors = new java.util.ArrayList();
+                        }
+                        errors.add(line);
+                        properties.put("Error", errors);
+
+                        properties.put("Status", "Failure");
+                    });
+                    scanner.scan();
+
+                    var errors = properties.get("Error");
+                    if (errors == null) {
+                        errors = new java.util.ArrayList();
+                    }
+                    properties.put("Error", errors.toString());
+                }
+            ]]>
+        </post-processing>
+        <command program="${GROOVY_HOME}/bin/groovy">
+            <arg value="-cp"/>
+            <arg path="classes:lib/*"/>
+            <arg value="-Djnp.disableDiscovery=true"/>
+            <arg file="example_step_2.groovy"/>
             <arg file="${PLUGIN_INPUT_PROPS}"/>
             <arg file="${PLUGIN_OUTPUT_PROPS}"/>
         </command>
